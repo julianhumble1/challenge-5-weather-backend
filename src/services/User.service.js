@@ -1,7 +1,9 @@
+import User from "../models/User.model.js";
+
 export default class UserService {
 
-    getTodos = () => {
-        return "Getting all todos";
+    getTodos = async () => {
+        return await User.find({})
     }
 
 }
