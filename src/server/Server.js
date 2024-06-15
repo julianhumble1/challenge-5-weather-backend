@@ -2,15 +2,15 @@ import express from "express";
 
 export default class Server {
     #app;
-    #host;
     #port;
+    #host;
     #router;
     #server;
 
-    constructor(host, port, router) {
+    constructor(port, host, router) {
         this.#app = express();
-        this.#host = host;
         this.#port = port;
+        this.#host = host;
         this.#router = router;
         this.#server = null;
     }
