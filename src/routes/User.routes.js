@@ -12,8 +12,8 @@ export default class UserRoutes {
     }
 
     #initialiseRoutes = () => {
-
-    }
+        this.#router.get("/", (req, res) => res.send("Getting todos"))
+    }  
 
     getRouter = () => {
         return this.#router
