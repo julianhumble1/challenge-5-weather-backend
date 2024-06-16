@@ -21,7 +21,7 @@ export default class UserRoutes {
             this.#controller.getUsers)
         this.#router.post(
             "/",
-            ... UserValidator.validateNewUser(),
+            ...UserValidator.validateNewUser(),
             this.#controller.addNewUser
         )
     } 

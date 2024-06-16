@@ -14,13 +14,12 @@ export default class UserController {
     }
 
     addNewUser = async (req, res) => {
-        console.log("reached controller")
         UserValidator.handleValidationErrors(req, res)
         try {
             const newUser = await this.#service.addNewUser(req.body)
             res.status(201).json(newUser)
         } catch (error) {
-            res.status(500).send("Internal server error")
+            res.status(500).json("Internal server error")
         }
     }
 

@@ -3,7 +3,6 @@ import * as expressValidator from "express-validator"
 
 export default class UserValidator {
     static validateNewUser = () => {
-        console.log("reached validation")
         try {
             const errorsArray = [
                 expressValidator.body("email")
@@ -14,7 +13,6 @@ export default class UserValidator {
                     .matches(/\d/).withMessage("Password must contain a number")
                     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage("Password must contain a special character"),
             ]
-            console.log(errorsArray)
             return errorsArray;
         } catch (error) {
             console.log(error);
