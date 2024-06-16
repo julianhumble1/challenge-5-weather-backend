@@ -104,5 +104,15 @@ describe("addNewUser integration tests", () => {
             // Assert
             expect(response.status).to.equal(400);
         })
+
+        it("should response with response code 400 if bad request - no email", async () => {
+            // Arrange
+            const invalidUser = { ...newUser }
+            delete invalidUser.email;
+            // Act
+            const response = await request.post("/").send(invalidUser);
+            // Assert
+            expect(response.status).to.equal(400);
+        })
     })
 })
