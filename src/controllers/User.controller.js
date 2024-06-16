@@ -8,8 +8,8 @@ export default class UserController {
         this.#service = service
     }
 
-    getTodos = (req, res) => {
-        res.send(this.#service.getTodos())
+    getUsers = (req, res) => {
+        res.send(this.#service.getUsers())
     }
 
 }
