@@ -2,7 +2,6 @@ import { expect } from "chai";
 import sinon from "sinon";
 
 import UserController from "../../src/controllers/User.controller.js";
-import User from "../../src/models/User.model.js";
 import UserValidator from "../../src/middleware/UserValidator.js";
 
 describe("UserController tests", () => {
@@ -10,26 +9,16 @@ describe("UserController tests", () => {
         let userController;
         let userServices;
 
+        let req, res, next;
+        let userValidatorStub;
+
         beforeEach(() => {
             userServices = {
                     addNewUser: sinon.stub()
                 }
             userController = new UserController(userServices)
-        })
 
-        afterEach(() => {
-                sinon.restore();
-        })
-
-        describe("successful request tests", () => {
-    
-            let req, res, next;
-            let userValidatorStub;
-            let newUser;
-
-            beforeEach(() => {
-    
-                req = {
+            req = {
                     body:
                         {"email": "user@example.com",
                         "password": "password1!"}
@@ -40,7 +29,17 @@ describe("UserController tests", () => {
                 }
                 next = sinon.spy();
                 userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
+        })
+
+        afterEach(() => {
+                sinon.restore();
+        })
+
+        describe("successful request tests", () => {
     
+            let newUser;
+
+            beforeEach(() => {
                 newUser = {
                         "email": "user@example.com",
                         "password": "password1!",
@@ -49,8 +48,6 @@ describe("UserController tests", () => {
                         "__v": 0
                 }
             })
-    
-            
     
             it("should respond with new user in body if request is successful", async () => {
                 // Arrange
@@ -72,25 +69,6 @@ describe("UserController tests", () => {
         })
 
         describe("unsuccessful request tests", () => {
-
-            let req, res, next;
-            let userValidatorStub;
-    
-            beforeEach(() => {
-    
-                req = {
-                    body:
-                        {"email": "user@example.com",
-                        "password": "password1!"}
-                }     
-                res = {
-                    json: sinon.spy(),
-                    status: sinon.stub().returnsThis()
-                }
-                next = sinon.spy();
-                userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
-
-            })
 
             it("should respond with 500 code if addNewUser service throws error", async () => {
                 // Arrange
