@@ -23,7 +23,6 @@ export default class UserValidator {
     static handleValidationErrors = (req, res) => {
         try {
             const errors = expressValidator.validationResult(req);
-            console.log(errors)
             if (!errors.isEmpty()) {
                 const extractedErrors = [];
                 errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))

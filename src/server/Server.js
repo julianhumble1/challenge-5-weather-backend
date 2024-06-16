@@ -30,4 +30,8 @@ export default class Server {
     close = () => {
         this.#server?.close();
     }
+
+    getApp = () => {
+        return this.#app
+    }
 }
