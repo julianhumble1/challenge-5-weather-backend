@@ -105,7 +105,7 @@ describe("addNewUser integration tests", () => {
             expect(response.status).to.equal(400);
         })
 
-        it("should response with response code 400 if bad request - no email", async () => {
+        it("should respond with response code 400 if bad request - no email", async () => {
             // Arrange
             const invalidUser = { ...newUser }
             delete invalidUser.email;
@@ -115,7 +115,7 @@ describe("addNewUser integration tests", () => {
             expect(response.status).to.equal(400);
         })
 
-        it("should response with response code 400 if bad request - invalid password", async () => {
+        it("should respond with response code 400 if bad request - invalid password", async () => {
             // Arrange
             const invalidUser = { ...newUser, password: "password" }
             // Act
@@ -124,7 +124,7 @@ describe("addNewUser integration tests", () => {
             expect(response.status).to.equal(400);
         })
 
-        it("should response with response code 400 if bad request - no password", async () => {
+        it("should respond with response code 400 if bad request - no password", async () => {
             // Arrange
             const invalidUser = { ...newUser }
             delete invalidUser.password;
@@ -132,6 +132,15 @@ describe("addNewUser integration tests", () => {
             const response = await request.post("/").send(invalidUser);
             // Assert
             expect(response.status).to.equal(400);
+        })
+
+        it("should respond with response code 500 if bad request - additional key", async () => {
+            // Arrange
+            const invalidUser = { ...newUser, injection:"malicious code" }
+            // Act
+            const response = await request.post("/").send(invalidUser);
+            // Assert
+            expect(response.status).to.equal(500);
         })
     })
 })
