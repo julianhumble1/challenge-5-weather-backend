@@ -3,7 +3,6 @@ import User from "../models/User.model.js";
 export default class UserService {
 
     getUsers = async () => {
-        console.log("reached service")
         return await User.find({})
     }
 

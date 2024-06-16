@@ -84,6 +84,16 @@ describe("addNewUser integration tests", () => {
             )
             // Assert
             expect(addedUser).to.include(newUser);
-         })
+        })
+        
+        it("should respond with a 500 status code if there is an error", async () => {
+            // Arrange
+            const serviceStub = sinon.stub(userService, "addNewUser")
+            serviceStub.throws(new Error("test error")); 
+            // Act
+            const response = await request.post("/").send(newUser);
+            // Assert
+            expect(response.status).to.equal(500);
+        })
     })
 })
