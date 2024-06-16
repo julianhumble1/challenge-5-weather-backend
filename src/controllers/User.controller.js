@@ -9,8 +9,9 @@ export default class UserController {
         this.#service = service
     }
 
-    getUsers = (req, res) => {
-        res.send(this.#service.getUsers())
+    getUsers = async (req, res) => {
+        const users = await this.#service.getUsers()
+        res.json(users)
     }
 
     addNewUser = async (req, res) => {

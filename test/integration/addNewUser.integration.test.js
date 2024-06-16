@@ -66,12 +66,24 @@ describe("addNewUser integration tests", () => {
             expect(response.status).to.equal(201);
         })
 
-        it("should respond with the created todo if successful", async () => {
+        it("should respond with the created user if successful", async () => {
             // Arrange
             // Act
             const response = await request.post("/").send(newUser);
             // Assert
             expect(response.body).to.include(newUser);
         })
+
+        it("should add the new user to the database if successful", async () => {
+            // Arrange
+            // Act
+            await request.post("/").send(newUser);
+            const response = await request.get("/");
+            const addedUser = response.body.find((user) => 
+                user.email === newUser.email
+            )
+            // Assert
+            expect(addedUser).to.include(newUser);
+         })
     })
 })
