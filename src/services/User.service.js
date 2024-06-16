@@ -6,4 +6,14 @@ export default class UserService {
         return await User.find({})
     }
 
+    addNewUser = async (newUser) => {
+        let user;
+        try {
+            user = new User(newUser)
+        } catch (e) {
+            throw new Error("Invalid new user");
+        }
+        return await user.save();
+    }
+
 }

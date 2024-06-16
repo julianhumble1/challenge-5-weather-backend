@@ -16,10 +16,12 @@ export default class UserRoutes {
     }
 
     #initialiseRoutes = () => {
-        this.#router.get("/", this.#controller.getUsers)
+        this.#router.get(
+            "/",
+            this.#controller.getUsers)
         this.#router.post(
-            "/", 
-            [UserValidator.validateNewUser()],
+            "/",
+            ... UserValidator.validateNewUser(),
             this.#controller.addNewUser
         )
     } 
