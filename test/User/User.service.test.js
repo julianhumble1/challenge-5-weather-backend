@@ -2,6 +2,8 @@ import { expect } from "chai";
 import sinon from "sinon";
 import bcrypt from "bcrypt"
 
+import jwt from "jsonwebtoken"
+
 import User from "../../src/models/User.model.js";
 import UserService from "../../src/services/User.service.js";
 
@@ -59,6 +61,35 @@ describe("User service tests", () => {
                 assert.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e).to.equal(error);
+            } 
+        })
+    })
+
+    describe("loginUser service tests", () => {
+        let findUserStub;
+        let bcryptStub;
+        let jwtStub;
+
+        beforeEach(() => {
+            findUserStub = sinon.stub(User, "findOne")
+            jwtStub = sinon.stub(jwt, "sign").returns("accessToken")
+        })
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        it("should throw internal system error if call to database fails to respond", async () => {
+            // Arrange
+            const invalidUser = { email: "" };
+            const error = new Error("Internal system error")
+            findUserStub.throws(error)
+            // Act // Assert
+            try {
+                await userService.loginUser(invalidUser)
+                assert.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
             }
             
         })
