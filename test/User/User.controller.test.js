@@ -107,7 +107,11 @@ describe("UserController tests", () => {
             email: "email1@email.com",
             password: "password1!",
             accessToken: "validToken"
-            }
+        }
+        
+        const invalidServiceResponse = {
+            accessToken: null
+        }
 
         it("should respond with details and access token if request is successful", async () => {
             // Arrange
@@ -119,11 +123,21 @@ describe("UserController tests", () => {
         })
 
         it("should response with response code 201 if request is successful", async () => {
+            // Arrange
             userServices.loginUser.resolves(validServiceResponse)
             // Act
             await userController.loginUser(req, res);
             // Assert
             expect(res.status.calledWith(201)).to.be.true;
         }) 
+
+        it("should respond with with response code 401 if password does not match username", async () => {
+            // Arrange
+            userServices.loginUser.resolves(invalidServiceResponse)
+            // Act
+            await userController.loginUser(req, res);
+            // Assert
+            expect(res.status.calledWith(401)).to.be.true;
+        })
     })
 })
