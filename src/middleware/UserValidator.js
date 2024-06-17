@@ -2,7 +2,7 @@ import * as expressValidator from "express-validator"
 
 
 export default class UserValidator {
-    static validateNewUser = () => {
+    static validateEmailPassword = () => {
         try {
             const errorsArray = [
                 expressValidator.body("email")
