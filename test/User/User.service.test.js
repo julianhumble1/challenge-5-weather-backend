@@ -127,5 +127,24 @@ describe("User service tests", () => {
             // Assert
             expect(response.accessToken).to.equal(null)
         })
+
+        it("should return expected object when request is successful", async () => {
+            // Arrange
+            const validUser = {
+                email: "email@email.com",
+                password: "password1!"
+            }
+            findUserStub.returns({id: "1", email: "email@email.com"})
+            bcryptStub.returns(true)
+            const expectedReponse = {
+                id: "1",
+                email: "email@email.com",
+                accessToken: "accessToken"
+            }
+            // Act
+            const response = await userService.loginUser(validUser)
+            // Assert
+            expect(response).to.deep.equal(expectedReponse)
+        })
     })
 })
