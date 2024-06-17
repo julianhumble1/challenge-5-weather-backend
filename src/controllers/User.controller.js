@@ -26,10 +26,21 @@ export default class UserController {
 
     loginUser = async (req, res) => {
         UserValidator.handleValidationErrors(req, res)
+        let response;
         try {
-            const user = await this.#service.loginUser(req.body)
+            response = await this.#service.loginUser(req.body)
         } catch (e) {
-            console.log(e);
+            if (e.message === "Internal system error") {
+                res.status(500).json(e.message)
+            } else if (e.message === "User not found in database") {
+                res.status(404).json(e.message)
+            }
+        }
+
+        if (response.accessToken === null) {
+            res.status(401).json("Invalid username/password combination")
+        } else {
+            res.status(201).json(response)
         }
     }
 

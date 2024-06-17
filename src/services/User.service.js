@@ -31,6 +31,21 @@ export default class UserService {
         if (!user) {
             throw new Error("User not found in database")
         }
+
+        const passwordsMatch = bcrypt.compareSync(password, user.password);
+        if (!passwordsMatch) {
+            return {
+                accessToken: null
+            }
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: 86400 });
+        console.log(token)
+        return {
+            id: user.id,
+            email: user.email,
+            accessToken: token
+        }
     }
 
 }
