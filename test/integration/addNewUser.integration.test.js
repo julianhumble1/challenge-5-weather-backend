@@ -49,7 +49,7 @@ describe("addNewUser integration tests", () => {
 
         try {
             await User.insertMany(testUsers);
-            console.log("Databse populated with test users");
+            console.log("Database populated with test users");
         } catch (e) {
             console.log(e.message);
             console.log("Error inserting");
@@ -71,7 +71,7 @@ describe("addNewUser integration tests", () => {
             // Act
             const response = await request.post("/").send(newUser);
             // Assert
-            expect(response.body).to.include(newUser);
+            expect(response.body.email).to.equal(newUser.email);
         })
 
         it("should add the new user to the database if successful", async () => {
@@ -83,7 +83,7 @@ describe("addNewUser integration tests", () => {
                 user.email === newUser.email
             )
             // Assert
-            expect(addedUser).to.include(newUser);
+            expect(addedUser.email).to.equal(newUser.email);
         })
         
         it("should respond with a 500 status code if there is an error", async () => {

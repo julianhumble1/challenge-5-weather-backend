@@ -24,6 +24,11 @@ export default class UserRoutes {
             ...UserValidator.validateEmailPassword(),
             this.#controller.addNewUser
         )
+        this.#router.post(
+            "/login",
+            ...UserValidator.validateEmailPassword(),
+            this.#controller.loginUser
+        )
     } 
 
     getRouter = () => {

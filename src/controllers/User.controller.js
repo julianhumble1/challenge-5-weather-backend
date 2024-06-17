@@ -24,4 +24,13 @@ export default class UserController {
         }
     }
 
+    loginUser = async (req, res) => {
+        UserValidator.handleValidationErrors(req, res)
+        try {
+            const user = await this.#service.loginUser(req.body)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 }

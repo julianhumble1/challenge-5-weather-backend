@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import sinon from "sinon";
+import bcrypt from "bcrypt"
 
 import User from "../../src/models/User.model.js";
 import UserService from "../../src/services/User.service.js";
@@ -14,12 +15,14 @@ describe("User service tests", () => {
         let userStub;
         let newUser;
         let saveStub
-        
+        let bcryptStub;
 
         beforeEach(() => {
             userStub = sinon.stub(User.prototype, "constructor").callsFake((newUser) => { { } })
             
             saveStub = sinon.stub(User.prototype, "save");
+
+            bcryptStub = sinon.stub(bcrypt, "hashSync").returns("encryptedPassword")
             
             newUser = {"email": "user@example.com",
                         "password": "password1!"}
@@ -34,17 +37,14 @@ describe("User service tests", () => {
             // Arrange
             const newUserDoc = {
                 "email": "user@example.com",
-                "password": "password1!",
-                "favouriteLocations": [],
-                "_id": "666eecdb4463cfb7134ef2ac",
-                "__v": 0
+                "password": "encryptedPassword",
             }
 
             saveStub.returns(newUserDoc)
             // Act
             const result = await userService.addNewUser(newUser)
             // Assert
-            expect(result).to.equal(newUserDoc);
+            expect(result).to.contain(newUserDoc);
         })
 
         it("should throw an error when save fails", async () => {
