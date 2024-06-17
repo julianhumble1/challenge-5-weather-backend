@@ -17,6 +17,10 @@ describe("UserController tests", () => {
         status: sinon.stub().returnsThis()
     }
 
+    afterEach(() => {
+        sinon.restore();
+    })
+
     describe("addNewUser request tests", () => {
 
         beforeEach(() => {
@@ -83,10 +87,10 @@ describe("UserController tests", () => {
 
     describe("login request tests", () => {
 
-         beforeEach(() => {
+        beforeEach(() => {
             userServices = {
-                    loginUser: sinon.stub()
-                }
+                loginUser: sinon.stub()
+            }
             userController = new UserController(userServices)
 
             req = {
@@ -99,10 +103,6 @@ describe("UserController tests", () => {
             userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
         })
 
-        afterEach(() => {
-                sinon.restore();
-        })
-
         const validServiceResponse = {
             email: "email1@email.com",
             password: "password1!",
@@ -112,6 +112,10 @@ describe("UserController tests", () => {
         const invalidServiceResponse = {
             accessToken: null
         }
+
+        afterEach(() => {
+            sinon.restore();
+        })
 
         it("should respond with details and access token if request is successful", async () => {
             // Arrange
@@ -131,13 +135,22 @@ describe("UserController tests", () => {
             expect(res.status.calledWith(201)).to.be.true;
         }) 
 
-        it("should respond with with response code 401 if password does not match username", async () => {
+        it("should respond with with response code 401 if password does not match email", async () => {
             // Arrange
             userServices.loginUser.resolves(invalidServiceResponse)
             // Act
             await userController.loginUser(req, res);
             // Assert
             expect(res.status.calledWith(401)).to.be.true;
+        })
+
+        it("should respond with response code 404 if user is not in database", async () => {
+            // Arrange
+            userServices.loginUser.rejects(new Error("User not found in database"))
+            // Act
+            await userController.loginUser(req, res);
+            // Assert
+            expect(res.status.calledWith(404)).to.be.true;
         })
     })
 })

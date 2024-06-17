@@ -18,9 +18,9 @@ export default class UserController {
         UserValidator.handleValidationErrors(req, res)
         try {
             const newUser = await this.#service.addNewUser(req.body)
-            res.status(201).json(newUser)
+            return res.status(201).json(newUser)
         } catch (error) {
-            res.status(500).json("Internal server error")
+            return res.status(500).json("Internal server error")
         }
     }
 
@@ -31,16 +31,16 @@ export default class UserController {
             response = await this.#service.loginUser(req.body)
         } catch (e) {
             if (e.message === "Internal system error") {
-                res.status(500).json(e.message)
+                return res.status(500).json(e.message)
             } else if (e.message === "User not found in database") {
-                res.status(404).json(e.message)
+                return res.status(404).json(e.message)
             }
         }
 
         if (response.accessToken === null) {
-            res.status(401).json("Invalid username/password combination")
+            return res.status(401).json("Invalid username/password combination")
         } else {
-            res.status(201).json(response)
+            return res.status(201).json(response)
         }
     }
 
