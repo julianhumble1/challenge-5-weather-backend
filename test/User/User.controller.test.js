@@ -117,5 +117,13 @@ describe("UserController tests", () => {
             // Assert
             expect(res.json.calledWith(validServiceResponse)).to.be.true;
         })
+
+        it("should response with response code 201 if request is successful", async () => {
+            userServices.loginUser.resolves(validServiceResponse)
+            // Act
+            await userController.loginUser(req, res);
+            // Assert
+            expect(res.status.calledWith(201)).to.be.true;
+        }) 
     })
 })
