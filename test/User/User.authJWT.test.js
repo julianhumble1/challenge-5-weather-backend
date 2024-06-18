@@ -12,20 +12,23 @@ describe("authJWT tests", () => {
     let nextFunction;
 
     beforeEach(() => {
-        mockRequest = {
-                email: "user@example.com",
-                id: "666ebf51cdf1cff8e67b6fc4"
-        }
-        mockResponse = {
-            send: sinon.spy(),
-            status: sinon.stub().returnsThis()
-        }
-        nextFunction = sinon.spy();
-    })
-
-    afterEach(() => {
-        sinon.restore()
-    })
+            mockRequest = {
+                body: {
+                    email: "user@example.com",
+                    id: "666ebf51cdf1cff8e67b6fc4"
+                },
+                userId: "666ebf51cdf1cff8e67b6fc4"
+            };
+            mockResponse = {
+                send: sinon.spy(),
+                status: sinon.stub().returnsThis(),
+            };
+            nextFunction = sinon.spy();
+        });
+    
+        afterEach(() => {
+            sinon.restore();
+        });
 
     describe("verifyToken tests", () => {
     

@@ -256,10 +256,10 @@ describe("User service tests", () => {
                 save: saveSpy
             })
             bcryptStub.returns(true)
-
         
             // Act
-            await userService.updatePassword(requestBody)// Assert
+            await userService.updatePassword(requestBody)
+            // Assert
             expect(saveSpy.called).to.be.true;
         })
 

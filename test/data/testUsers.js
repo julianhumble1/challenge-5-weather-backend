@@ -27,6 +27,12 @@ const generateTestData = async () => {
         newUser: {
             "email": "new@example.com",
             "password": "password1!",     
+        },
+        updateUser: {
+            email: "user@example.com",
+            oldPassword: "password1!",
+            newPassword: "password2!"
+
         }
     }
 }

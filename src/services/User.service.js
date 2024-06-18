@@ -50,7 +50,7 @@ export default class UserService {
     updatePassword = async ({ email, oldPassword, newPassword }) => {
         let user;
         try {
-            user = await User.findOne({email:email}) 
+            user = await User.findOne({ email: email }) 
         } catch (e) {
             throw new Error("Internal system error")
         }
@@ -69,10 +69,8 @@ export default class UserService {
                 await user.save();
                 return;
             } catch (e) {
-                console.error(e)
                 throw new Error("Internal system error")
             }
         }
     }
-
 }

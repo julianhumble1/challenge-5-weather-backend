@@ -40,7 +40,7 @@ export default class UserRoutes {
 
         this.#router.patch(
             "/updatePassword",
-            [authJWT.verifyToken, authJWT.isCorrectId, UserValidator.validateEmailAndUpdatedPassword],
+            [authJWT.verifyToken, authJWT.isCorrectId, ...UserValidator.validateEmailAndUpdatedPassword()],
             this.#controller.updatePassword
         )  
     } 
