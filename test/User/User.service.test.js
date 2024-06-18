@@ -306,5 +306,21 @@ describe("User service tests", () => {
                 expect(e.message).to.equal(error.message);
             }
         })
+
+        it("should return user id and favourite locations if successful", async () => {
+            // Arrange
+            const requestBody = {
+                email: "user@example.com",
+            }
+            const expectedReponse = {
+                id: 123,
+                favouriteLocations:[]
+            }
+            findUserStub.returns(expectedReponse)
+            // Act
+            const response = await userService.getFavLocations(requestBody)
+            // Assert
+            expect(response).to.deep.equal(expectedReponse)
+        })
     })
 })
