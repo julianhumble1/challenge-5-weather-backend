@@ -31,8 +31,7 @@ class authJWT {
         if (!user) {
             return res.status(400).send("User email not in database")
         }
-        console.log(user.id)
-        console.log(req.userId)
+
         if (user.id !== req.userId) {
             return res.status(401).send("Invalid token")
         } else {
