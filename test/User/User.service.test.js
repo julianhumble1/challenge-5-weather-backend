@@ -147,4 +147,39 @@ describe("User service tests", () => {
             expect(response).to.deep.equal(expectedReponse)
         })
     })
+
+    describe("updatePassword service tests", () => {
+
+        let findUserStub;
+        let bcryptStub;
+        let saveStub;
+
+        beforeEach(() => {
+            findUserStub = sinon.stub(User, "findOne")
+            bcryptStub = sinon.stub(bcrypt, "compareSync")
+            saveStub = sinon.stub(User.prototype, "save")
+        })
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        it("should throw internal system error if first call to database fails to respond", async () => {
+            // Arrange
+            const requestBody = {
+                email: "email2@email.com",
+                oldPassword: "password1!",
+                newPassword: "password2!"
+             };
+            const error = new Error("Internal system error")
+            findUserStub.throws(error)
+            // Act // Assert
+            try {
+                await userService.loginUser(requestBody)
+                assert.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
+    })
 })
