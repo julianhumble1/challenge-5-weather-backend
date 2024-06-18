@@ -8,7 +8,7 @@
     "start-win": "SET NODE_ENV=dev&&nodemon src/index.js",
     "test-win": "SET NODE_ENV=test&&mocha --timeout 10000 --exit --recursive",
     "coverage": "NODE_ENV=test c8 -r html npm test",
-    "coverage-win": "SET NODE_ENV=test&& c8 -r html npm run test-win"
+    "coverage-win": "SET NODE_ENV=test&& c8 -r text npm run test-win"
   },
   "author": "",
   "license": "ISC",
