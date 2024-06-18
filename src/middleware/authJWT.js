@@ -21,18 +21,18 @@ class authJWT {
     }
 
     static isCorrectId = (req, res ,next) => {
-        let bodyUser;
+        let user;
         try {
-            bodyUser = User.findByOne({email: req.email})
+            user = User.findOne({email: req.email})
         } catch (e) {
             return res.status(500).send("Internal system error")
         }
 
-        if (!bodyUser) {
+        if (!user) {
             return res.status(400).send("User email not in database")
         }
 
-        if (bodyUser.id !== req.userId) {
+        if (user.id !== req.userId) {
             return res.status(401).send("Invalid token")
         } else {
             next();
