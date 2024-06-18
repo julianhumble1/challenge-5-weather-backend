@@ -110,5 +110,14 @@ describe("authJWT tests", () => {
             // Arrange
             expect(mockResponse.status.calledWith(401)).to.be.true;
         })
+
+        it("should call next function if IDs match", async () => {
+            // Arrange
+            sinon.stub(User, "findOne").resolves({id:"666ebf51cdf1cff8e67b6fc4"})
+            // Act
+            await authJWT.isCorrectId(mockRequest, mockResponse, nextFunction)
+            // Assert
+            expect(nextFunction.called).to.be.true;
+        })
     })
 })

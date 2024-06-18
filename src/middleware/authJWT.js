@@ -20,10 +20,11 @@ class authJWT {
         });
     }
 
-    static isCorrectId = async (req, res ,next) => {
+    static isCorrectId = async (req, res, next) => {
         let user;
         try {
             user = await User.findOne({ email: req.email })
+            console.log(user)
         } catch (e) {
             return res.status(500).send("Internal system error")
         }
@@ -32,7 +33,7 @@ class authJWT {
             return res.status(400).send("User email not in database")
         }
 
-        if (user.id !== req.userId) {
+        if (user.id !== req.id) {
             return res.status(401).send("Invalid token")
         } else {
             next();
