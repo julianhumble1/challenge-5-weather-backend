@@ -83,5 +83,15 @@ describe("getFavLocations integration tests", () => {
             // Assert
             expect(response.status).to.equal(401)
         })
+
+        it("should respond with 400 if bad request - no email", async () => {
+            // Arrange
+            const invalidRequest = { ...requestBody }
+            delete invalidRequest.email;
+            // Act
+            const response = await request.post("/login").send(invalidRequest)
+            // Assert
+            expect(response.status).to.equal(400)
+        })
     })
 })
