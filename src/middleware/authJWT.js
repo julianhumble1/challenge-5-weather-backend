@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import User from "../models/User.model.js";
 
 class authJWT {
 
@@ -17,6 +18,26 @@ class authJWT {
             req.userId = decoded.id;
             next();
         });
+    }
+
+    static isCorrectId = (req, res ,next) => {
+        let bodyUser;
+        try {
+            bodyUser = User.findByOne({email: req.email})
+        } catch (e) {
+            return res.status(500).send("Internal system error")
+        }
+
+        if (!bodyUser) {
+            return res.status(400).send("User email not in database")
+        }
+
+        if (bodyUser.id !== req.userId) {
+            return res.status(401).send("Invalid token")
+        } else {
+            next();
+            return;
+        }
     }
 }
 
