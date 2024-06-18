@@ -206,15 +206,16 @@ describe("User service tests", () => {
 
         it("should throw user not found in database error if email doesn't match any existing users", async () => {
             // Arrange
-            const invalidUser = {
-                email: "email3@email.com",
-                password: "password1!"
-            };
+            const requestBody = {
+                email: "user@example.com",
+                oldPassword: "password1!",
+                newPassword: "password2!"
+             };
             const error = new Error("User not found in database")
             findUserStub.returns(null)
             // Act // Assert
             try {
-                await userService.updatePassword(invalidUser);
+                await userService.updatePassword(requestBody);
                 expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e.message).to.equal(error.message);
@@ -223,10 +224,11 @@ describe("User service tests", () => {
 
         it("should throw email and password don't match error if details don't match", async () => {
             // Arrange
-            const invalidUser = {
-                email: "email3@email.com",
-                password: "password1!"
-            };
+            const requestBody = {
+                email: "user@example.com",
+                oldPassword: "password1!",
+                newPassword: "password2!"
+             };
             const error = new Error("Email and password do not match")
             bcryptStub.throws(error)
             findUserStub.resolves({
@@ -234,11 +236,31 @@ describe("User service tests", () => {
             })
             // Act
             try {
-                await userService.updatePassword(invalidUser);
+                await userService.updatePassword(requestBody);
                 expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e.message).to.equal(error.message);
             }
+        })
+
+        it("should call save on the object if request is successful", async () => {
+            // Arrange
+            const requestBody = {
+                email: "user@example.com",
+                oldPassword: "password1!",
+                newPassword: "password2!"
+            };
+            const saveSpy = sinon.spy()
+            findUserStub.resolves({
+                id: "666ebf51cdf1cff8e67b6fc4",
+                save: saveSpy
+            })
+            bcryptStub.returns(true)
+
+        
+            // Act
+            await userService.updatePassword(requestBody)// Assert
+            expect(saveSpy.called).to.be.true;
         })
 
     })

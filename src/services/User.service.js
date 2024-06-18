@@ -69,6 +69,7 @@ export default class UserService {
                 await user.save();
                 return;
             } catch (e) {
+                console.error(e)
                 throw new Error("Internal system error")
             }
         }
