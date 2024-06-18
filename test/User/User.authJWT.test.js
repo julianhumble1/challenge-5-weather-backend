@@ -101,5 +101,14 @@ describe("authJWT tests", () => {
             // Assert
             expect(mockResponse.status.calledWith(500)).to.be.true;
         })
+
+        it("should respond status code 401 if user IDs do not match", async () => {
+            // Arrange
+            sinon.stub(User, "findOne").resolves({id:123})
+            // Act
+            await authJWT.isCorrectId(mockRequest, mockResponse, nextFunction)
+            // Arrange
+            expect(mockResponse.status.calledWith(401)).to.be.true;
+        })
     })
 })
