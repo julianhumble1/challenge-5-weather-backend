@@ -58,4 +58,19 @@ describe("verifyToken tests", () => {
         // Assert
         expect(mockRequest.userId).to.equal(decodedToken.id);
     })
+
+    it("should call next function if token is valid", () => {
+        // Arrange
+        mockRequest.headers = { "x-access-token": "validToken" }
+        const decodedToken = {
+            "id": "123"
+        }
+        sinon.stub(jwt, "verify").callsFake((token, secret, callback) => {
+            callback(null, decodedToken)
+        })
+        // Act
+        authJWT.verifyToken(mockRequest, mockResponse, nextFunction)
+        // Assert
+        expect(nextFunction.called).to.be.true;
+    })
 })
