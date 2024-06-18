@@ -203,5 +203,23 @@ describe("User service tests", () => {
                 expect(e.message).to.equal(error.message);
             }
         })
+
+        it("should throw user not found in database error if email doesn't match any existing users", async () => {
+            // Arrange
+            const invalidUser = {
+                email: "email3@email.com",
+                password: "password1!"
+            };
+            const error = new Error("User not found in database")
+            findUserStub.returns(null)
+            // Act // Assert
+            try {
+                await userService.updatePassword(invalidUser);
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
+
     })
 })
