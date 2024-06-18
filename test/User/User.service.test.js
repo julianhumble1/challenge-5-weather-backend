@@ -58,7 +58,7 @@ describe("User service tests", () => {
             // Act // Assert
             try {
                 await userService.addNewUser(invalidUser);
-                assert.fail("Expected error was not thrown")
+                expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e).to.equal(error);
             } 
@@ -91,7 +91,7 @@ describe("User service tests", () => {
             // Act // Assert
             try {
                 await userService.loginUser(invalidUser)
-                assert.fail("Expected error was not thrown")
+                expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e.message).to.equal(error.message);
             }
@@ -108,7 +108,7 @@ describe("User service tests", () => {
             // Act // Assert
             try {
                 await userService.loginUser(invalidUser);
-                assert.fail("Expected error was not thrown")
+                expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e.message).to.equal(error.message);
             }
@@ -175,8 +175,30 @@ describe("User service tests", () => {
             findUserStub.throws(error)
             // Act // Assert
             try {
-                await userService.loginUser(requestBody)
-                assert.fail("Expected error was not thrown")
+                await userService.updatePassword(requestBody)
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
+
+        it("should throw internal system error if  call to save to database fails to respond", async () => {
+            // Arrange
+            const requestBody = {
+                email: "user@example.com",
+                oldPassword: "password1!",
+                newPassword: "password2!"
+             };
+            const error = new Error("Internal system error")
+            findUserStub.resolves({
+                id: "666ebf51cdf1cff8e67b6fc4"
+            })
+            bcryptStub.returns(true)
+            saveStub.throws(error)
+            // Act // Assert
+            try {
+                await userService.updatePassword(requestBody)
+                expect.fail("Expected error was not thrown")
             } catch (e) {
                 expect(e.message).to.equal(error.message);
             }
