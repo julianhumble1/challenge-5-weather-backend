@@ -29,7 +29,7 @@ class authJWT {
         }
 
         if (!user) {
-            return res.status(400).send("User email not in database")
+            return res.status(404).send("User email not in database")
         }
 
         if (user.id !== req.userId) {

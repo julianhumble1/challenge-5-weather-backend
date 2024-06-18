@@ -75,13 +75,23 @@ describe("updatePassword integration tests", () => {
         it("should respond with 401 if password doesn't match email", async () => {
             // Arrange
             const invalidUpdateUser = { ...updateUser, oldPassword: "wrongPassword1!" }
-            console.log(invalidUpdateUser)
             // Act
             const response = await request.patch("/updatePassword")
                 .set("x-access-token", accessToken)
                 .send(invalidUpdateUser)
             // Assert
             expect(response.status).to.equal(401)
+        })
+
+        it("should respond with 404 if email isn't in database", async () => {
+            // Arrange
+            const invalidUpdateUser = { ...updateUser, email: "nonexistentemail@email.com" }
+            // Act
+            const response = await request.patch("/updatePassword")
+                .set("x-access-token", accessToken)
+                .send(invalidUpdateUser)
+            // Assert
+            expect(response.status).to.equal(404)
         })
     })
 })
