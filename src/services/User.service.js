@@ -23,7 +23,7 @@ export default class UserService {
     loginUser = async ({ email, password }) => {
         let user;
         try {
-            user = await User.findOne({ email: email });
+            user = await User.findOne({ email: email }) 
         } catch (e) {
             throw new Error("Internal system error")
         }
@@ -44,6 +44,33 @@ export default class UserService {
             id: user.id,
             email: user.email,
             accessToken: token
+        }
+    }
+
+    updatePassword = async ({ email, oldPassword, newPassword }) => {
+        let user;
+        try {
+            user = await User.findOne({email:email}) 
+        } catch (e) {
+            throw new Error("Internal system error")
+        }
+
+        if (!user) {
+            throw new Error("User not found in database")
+        }
+
+        const passwordsMatch = bcrypt.compareSync(oldPassword, user.password);
+        if (!passwordsMatch) {
+            throw new Error("Email and password do not match")
+        } else {
+            const hashedNewPassword = bcrypt.hashSync(newPassword, 8)
+            user.password = hashedNewPassword;
+            try {
+                await user.save();
+                return;
+            } catch (e) {
+                throw new Error("Internal system error")
+            }
         }
     }
 

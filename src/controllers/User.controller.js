@@ -44,4 +44,20 @@ export default class UserController {
         }
     }
 
+    updatePassword = async (req, res) => {
+        UserValidator.handleValidationErrors(req, res);
+        try {
+            await this.#service.updatePassword(req.body)
+            res.status(200).send("Successfully updated password")
+        } catch (e) {
+            if (e.message === "Internal system error") {
+                return res.status(500).json(e.message)
+            } else if (e.message === "User not found in database") {
+                return res.status(404).json(e.message)
+            } else if (e.message === "Email and password do not match") {
+                return res.status(401).json(e.message)
+            }
+        }
+    }
+
 }

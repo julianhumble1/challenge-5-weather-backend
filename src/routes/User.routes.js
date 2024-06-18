@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserController from "../controllers/User.controller.js";
 import UserValidator from "../middleware/UserValidator.js";
+import authJWT from "../middleware/authJWT.js";
 
 export default class UserRoutes {
 
@@ -36,6 +37,12 @@ export default class UserRoutes {
             ...UserValidator.validateEmailPassword(),
             this.#controller.loginUser
         )
+
+        this.#router.patch(
+            "/updatePassword",
+            [authJWT.verifyToken, authJWT.isCorrectId, UserValidator.validateEmailAndUpdatedPassword],
+            this.#controller.updatePassword
+        )  
     } 
 
     getRouter = () => {

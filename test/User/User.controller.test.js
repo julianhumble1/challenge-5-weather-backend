@@ -153,13 +153,40 @@ describe("UserController tests", () => {
             expect(res.status.calledWith(404)).to.be.true;
         })
 
-        it("should respond with response code 500 if database fails to make query to database", async () => {
+        it("should respond with response code 500 if it fails to make query to database", async () => {
             // Arrange
             userServices.loginUser.rejects(new Error("Internal system error"))
             // Act
             await userController.loginUser(req, res);
             // Assert
-            expect(res.status.calledWith(404)).to.be.true;
+            expect(res.status.calledWith(500)).to.be.true;
+        })
+    })
+
+    describe("updatePassword tests", () => {
+
+        beforeEach(() => {
+            userServices = {
+                updatePassword: sinon.stub()
+            }
+            userController = new UserController(userServices)
+
+            req = {
+                body:
+                    {"email": "user@example.com",
+                    "password": "password1!"}
+            }     
+            
+            next = sinon.spy();
+            userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
+        })
+        it("should respond with response code 500 if it fails to connect to database", async () => {
+            // Arrange
+            userServices.updatePassword.rejects(new Error("Internal system error"))
+            // Act
+            await userController.updatePassword(req, res)
+            // Assert
+            expect(res.status.calledWith(500)).to.be.true;
         })
     })
 })
