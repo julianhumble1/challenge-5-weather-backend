@@ -221,5 +221,25 @@ describe("User service tests", () => {
             }
         })
 
+        it("should throw email and password don't match error if details don't match", async () => {
+            // Arrange
+            const invalidUser = {
+                email: "email3@email.com",
+                password: "password1!"
+            };
+            const error = new Error("Email and password do not match")
+            bcryptStub.throws(error)
+            findUserStub.resolves({
+                id: "666ebf51cdf1cff8e67b6fc4"
+            })
+            // Act
+            try {
+                await userService.updatePassword(invalidUser);
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
+
     })
 })
