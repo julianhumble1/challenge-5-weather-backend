@@ -84,13 +84,22 @@ describe("authJWT tests", () => {
 
     describe("isCorrectId tests", () => {
 
-        it("should respond status code 400 if request is for user not in database", () => {
+        it("should respond status code 400 if request if user is not in database", async () => {
             // Arrange
             sinon.stub(User, "findOne").callsFake((email) => {null})
             // Act
-            authJWT.isCorrectId(mockRequest, mockResponse, nextFunction)
+            await authJWT.isCorrectId(mockRequest, mockResponse, nextFunction)
             // Assert
             expect(mockResponse.status.calledWith(400)).to.be.true;
+        })
+
+        it("should respond status code 500 if call to database fails", async() => {
+            // Arrange
+            sinon.stub(User, "findOne").rejects(new Error("failed to connect to database"))
+            // Act
+            await authJWT.isCorrectId(mockRequest, mockResponse, nextFunction)
+            // Assert
+            expect(mockResponse.status.calledWith(500)).to.be.true;
         })
     })
 })
