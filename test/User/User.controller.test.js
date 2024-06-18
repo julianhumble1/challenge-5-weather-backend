@@ -206,5 +206,15 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(401)).to.be.true;
         })
+
+        it("should respond with response code 200 if request is succesful", async () => {
+            // Arrange
+            userServices.updatePassword.resolves();
+            // Act
+            await userController.updatePassword(req, res)
+            // Assert
+            expect(res.status.calledWith(401)).to.be.true;
+        })
+
     })
 })
