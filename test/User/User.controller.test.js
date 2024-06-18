@@ -188,5 +188,14 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(500)).to.be.true;
         })
+
+        it("should respond with response code 404 if user is not in the database", async () => {
+            // Arrange
+            userServices.updatePassword.rejects(new Error("User not found in database"))
+            // Act
+            await userController.updatePassword(req, res)
+            // Assert
+            expect(res.status.calledWith(404)).to.be.true;
+        })
     })
 })
