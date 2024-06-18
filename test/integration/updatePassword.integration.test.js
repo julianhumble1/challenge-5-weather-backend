@@ -93,6 +93,15 @@ describe("updatePassword integration tests", () => {
             // Assert
             expect(response.status).to.equal(404)
         })
+
+        it("should respond with 403 if no token is provided", async () => {
+            // Arrange
+            // Act
+            const response = await request.patch("/updatePassword")
+                .send(updateUser)
+            // Assert
+            expect(response.status).to.equal(403)
+        })
     })
 })
 
