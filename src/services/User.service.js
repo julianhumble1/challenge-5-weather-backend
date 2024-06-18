@@ -40,7 +40,6 @@ export default class UserService {
         }
 
         const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: 86400 });
-        console.log(token)
         return {
             id: user.id,
             email: user.email,

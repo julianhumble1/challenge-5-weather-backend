@@ -79,5 +79,13 @@ describe("login user integration test", () => {
             // Assert
             expect(response.body.accessToken).not.to.equal(null)
         })
+
+        it("should respond with user id if successful", async () => {
+            // Arrange
+            // Act
+            const response = await request.post("/login").send(loginUser)
+            // Assert
+            expect(response.body.id).to.equal("666ebf51cdf1cff8e67b6fc4")
+        })
     })
 })
