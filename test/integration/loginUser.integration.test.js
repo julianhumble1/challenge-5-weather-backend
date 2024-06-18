@@ -95,5 +95,14 @@ describe("login user integration test", () => {
             // Assert
             expect(response.body.email).to.equal("user@example.com")
         })
+
+        it("should respond with 401 if password doesn't match email", async () => {
+            // Arrange
+            const invalidUser = { ...loginUser, password: "wrongPassword1!" }
+            // Act
+            const response = await request.post("/login").send(invalidUser)
+            // Assert
+            expect(response.status).to.equal(401)
+        })
     })
 })
