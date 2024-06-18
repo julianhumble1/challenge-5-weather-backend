@@ -102,6 +102,17 @@ describe("updatePassword integration tests", () => {
             // Assert
             expect(response.status).to.equal(403)
         })
+
+        it("should respond with 401 if access token can't be decoded", async () => {
+            // Arrange
+            const badAccessToken = "123"
+            // Act
+            const response = await request.patch("/updatePassword")
+                .set("x-access-token", badAccessToken)
+                .send(updateUser)
+            // Assert
+            expect(response.status).to.equal(401)
+        })
     })
 })
 
