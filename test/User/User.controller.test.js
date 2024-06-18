@@ -197,5 +197,14 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(404)).to.be.true;
         })
+
+        it("should respond with response code 401 if email and password don't match", async () => {
+            // Arrange
+            userServices.updatePassword.rejects(new Error("Email and password do not match"))
+            // Act
+            await userController.updatePassword(req, res)
+            // Assert
+            expect(res.status.calledWith(401)).to.be.true;
+        })
     })
 })
