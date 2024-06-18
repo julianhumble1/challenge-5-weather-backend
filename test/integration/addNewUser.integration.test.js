@@ -10,8 +10,8 @@ import UserController from "../../src/controllers/User.controller.js"
 import UserRoutes from "../../src/routes/User.routes.js"
 import UserService from "../../src/services/User.service.js"
 
-import testData from "../data/testUsers.js"
-const { testUsers, newUser } = testData;
+import generateTestData from "../data/testUsers.js"
+const { testUsers, newUser } = await generateTestData();
 
 describe("addNewUser integration tests", () => {
     let userServer;
