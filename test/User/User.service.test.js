@@ -262,6 +262,33 @@ describe("User service tests", () => {
             // Assert
             expect(saveSpy.called).to.be.true;
         })
+    })
 
+    describe("getFavLocations service tests", () => {
+        let findUserStub;
+
+        beforeEach(() => {
+            findUserStub = sinon.stub(User, "findOne")
+        })
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        it("should throw internal system error if connection to database fails", async () => {
+            // Arrange
+            const requestBody = {
+                email: "user@example.com",
+            }
+            const error = new Error("Internal system error")
+            findUserStub.rejects(error)
+            // Act // Assert
+            try {
+                await userService.getFavLocations(requestBody)
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
     })
 })

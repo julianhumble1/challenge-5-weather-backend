@@ -264,7 +264,7 @@ describe("UserController tests", () => {
             expect(res.status.calledWith(200)).to.be.true;
         })
 
-        it("should respond with favourite locaitons in the body if the request is successful", async () => {
+        it("should respond with favourite locations in the body if the request is successful", async () => {
             // Arrange
             userServices.getFavLocations.resolves({
                 favouriteLocations: ["216574"]
