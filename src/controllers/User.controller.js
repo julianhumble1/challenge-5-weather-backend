@@ -72,7 +72,7 @@ export default class UserController {
                 return res.status(404).json(e.message)
             }
         }
-        return res.status(200).json(response.favouriteLocations)
+        return res.status(201).json(response.favouriteLocations)
     }
 
 }

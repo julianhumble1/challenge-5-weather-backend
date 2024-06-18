@@ -11,17 +11,13 @@ import UserRoutes from "../../src/routes/User.routes.js"
 import UserService from "../../src/services/User.service.js"
 
 import generateTestData from "../data/testUsers.js"
-const { testUsers } = await generateTestData();
+const { testUsers, getFavLocationsUser } = await generateTestData();
 
 describe("getFavLocations integration tests", () => {
     let userServer;
     let userService;
     let database;
     let request;
-
-    const requestBody = {
-            email: "email@example.com"
-    }
 
     const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmViZjUxY2RmMWNmZjhlNjdiNmZjNCIsImlhdCI6MTcxODczNDYwNiwiZXhwIjoxNzE4ODIxMDA2fQ.buNU2i-GuqjnrezkUx_WEo9FyqpEvO2nU6g-AzWlTlE";
 
@@ -61,6 +57,7 @@ describe("getFavLocations integration tests", () => {
             console.log("Error inserting");
             throw new Error();
         }
+
     })
 
     describe("GET requests to '/fav'", () => {
@@ -68,7 +65,7 @@ describe("getFavLocations integration tests", () => {
             // Arrange
             // Act
             const response = await request.get("/fav")
-                .send(requestBody)
+                .send(getFavLocationsUser)
             // Assert
             expect(response.status).to.equal(403)
         })
@@ -79,28 +76,30 @@ describe("getFavLocations integration tests", () => {
             // Act
             const response = await request.get("/fav")
                 .set("x-access-token", badAccessToken)
-                .send(requestBody)
+                .send(getFavLocationsUser)
             // Assert
             expect(response.status).to.equal(401)
         })
 
-        it("should respond with 400 if bad request - no email", async () => {
+        it("should respond with 404 if email is not in database", async () => {
             // Arrange
-            const invalidRequest = { ...requestBody }
-            delete invalidRequest.email;
+            const invalidRequest = { ...getFavLocationsUser, email:"userdoesnotexist@email.com" }
             // Act
-            const response = await request.post("/login").send(invalidRequest)
+            const response = await request.get("/fav")
+                .set("x-access-token", accessToken)
+                .send(invalidRequest)
             // Assert
-            expect(response.status).to.equal(400)
+            expect(response.status).to.equal(404)
         })
 
-        it("should respond with 400 if bad request - no email", async () => {
+        it("should respond with status code 201 if successful", async () => {   
             // Arrange
-            const invalidRequest = { ...requestBody, email:"badEmail" }
             // Act
-            const response = await request.post("/login").send(invalidRequest)
+            const response = await request.get("/fav")
+                .set("x-access-token", accessToken)
+                .send(getFavLocationsUser)
             // Assert
-            expect(response.status).to.equal(400)
+            expect(response.status).to.equal(201)
         })
     })
 })

@@ -31,6 +31,9 @@ const generateTestData = async () => {
             email: "user@example.com",
             oldPassword: "password1!",
             newPassword: "password2!"
+        },
+        getFavLocationsUser: {
+            email: "user@example.com"
         }
     }
 }
