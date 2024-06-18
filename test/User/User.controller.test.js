@@ -180,6 +180,7 @@ describe("UserController tests", () => {
             next = sinon.spy();
             userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
         })
+
         it("should respond with response code 500 if it fails to connect to database", async () => {
             // Arrange
             userServices.updatePassword.rejects(new Error("Internal system error"))
@@ -216,5 +217,31 @@ describe("UserController tests", () => {
             expect(res.status.calledWith(401)).to.be.true;
         })
 
+    })
+
+    describe("getFavLocations tests", async () => {
+        beforeEach(() => {
+            userServices = {
+                getFavLocations: sinon.stub()
+            }
+            userController = new UserController(userServices)
+
+            req = {
+                body:
+                    {"email": "user@example.com"}
+            }     
+            
+            next = sinon.spy();
+            userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
+        })
+
+        it("should respond with code 500 if the service fails to connect to database", async () => {
+            // Arrange
+            userServices.getFavLocations.rejects(new Error("Internal system error"))
+            // Act
+            await userController.getFavLocations(req, res)
+            // Assert
+            expect(res.status.calledWith(500)).to.be.true;
+        })
     })
 })

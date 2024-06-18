@@ -73,4 +73,19 @@ export default class UserService {
             }
         }
     }
+
+    getFavLocations = async ({ email }) => {
+        let user;
+        try {
+            user = await User.findOne({email: email}, {"favouriteLocations": 1})
+        } catch (e) {
+            throw new Error("Internal system error")
+        }
+
+        if (!user) {
+            throw new Error("User not found in database")
+        } else {
+            return user;
+        }
+    }
 }

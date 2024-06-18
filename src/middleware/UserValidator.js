@@ -2,6 +2,20 @@ import * as expressValidator from "express-validator"
 
 
 export default class UserValidator {
+
+    static validateEmail = () => {
+        try {
+            const errorsArray = [
+                expressValidator.body("email")
+                    .isEmail().withMessage("Invalid email format"),
+            ]
+            return errorsArray;
+        } catch (error) {
+            console.log(error);
+            return []
+        }
+    }
+
     static validateEmailPassword = () => {
         try {
             const errorsArray = [
