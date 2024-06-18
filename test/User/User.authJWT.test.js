@@ -42,6 +42,20 @@ describe("verifyToken tests", () => {
         authJWT.verifyToken(mockRequest, mockResponse, nextFunction)
         // Assert
         expect(mockResponse.status.calledWith(401)).to.be.true;
+    })
 
+    it("should add decoded id to request header if token is valid", () => {
+        // Arrange
+        mockRequest.headers = { "x-access-token": "validToken" }
+        const decodedToken = {
+            "id": "123"
+        }
+        sinon.stub(jwt, "verify").callsFake((token, secret, callback) => {
+            callback(null, decodedToken)
+        })
+        // Act
+        authJWT.verifyToken(mockRequest, mockResponse, nextFunction)
+        // Assert
+        expect(mockRequest.userId).to.equal(decodedToken.id);
     })
 })
