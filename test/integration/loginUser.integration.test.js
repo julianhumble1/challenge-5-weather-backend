@@ -104,5 +104,14 @@ describe("login user integration test", () => {
             // Assert
             expect(response.status).to.equal(401)
         })
+
+        it("should respond with 404 if email is not in database", async () => {
+            // Arrange
+            const invalidUser = { ...loginUser, email: "no@email.com" }
+            // Act
+            const response = await request.post("/login").send(invalidUser)
+            // Assert
+            expect(response.status).to.equal(404)
+        })
     })
 })
