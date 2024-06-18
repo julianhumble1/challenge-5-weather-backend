@@ -290,5 +290,21 @@ describe("User service tests", () => {
                 expect(e.message).to.equal(error.message);
             }
         })
+
+        it("should throw user not found in database error if no matching user", async () => {
+            // Arrange
+            const requestBody = {
+                email: "user@example.com",
+            }
+            const error = new Error("User not found in database")
+            findUserStub.returns(null)
+            // Act // Assert
+            try {
+                await userService.getFavLocations(requestBody)
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
     })
 })
