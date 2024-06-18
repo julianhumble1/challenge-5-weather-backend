@@ -2,6 +2,7 @@ import authJWT from "../../src/middleware/authJWT.js"
 
 import { expect } from "chai";
 import sinon from "sinon"
+import jwt from "jsonwebtoken"
 
 describe("verifyToken tests", () => {
 
@@ -18,6 +19,10 @@ describe("verifyToken tests", () => {
         nextFunction = sinon.spy();
     })
 
+    afterEach(() => {
+        sinon.restore()
+    })
+
     it("should respond status code 403 if no token is provided", () => {
         // Arrange
         mockRequest.headers = {}
@@ -28,6 +33,15 @@ describe("verifyToken tests", () => {
     })
 
     it("should respond status code 401 if token provided is invalid", () => {
-        
+        // Arrange
+        mockRequest.headers = { "x-access-token": "invalid token" }
+        sinon.stub(jwt, "verify").callsFake((token, secret, callback) => {
+            callback(new Error("Invalid token"), null)
+        })
+        // Act
+        authJWT.verifyToken(mockRequest, mockResponse, nextFunction)
+        // Assert
+        expect(mockResponse.status.calledWith(401)).to.be.true;
+
     })
 })
