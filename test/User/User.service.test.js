@@ -323,4 +323,37 @@ describe("User service tests", () => {
             expect(response).to.deep.equal(expectedReponse)
         })
     })
+
+    describe("addFavLocation service tests", () => {
+        let findUserStub;
+        let saveStub;
+
+        beforeEach(() => {
+            findUserStub = sinon.stub(User, "findOne")
+            saveStub = sinon.stub(User.prototype, "save")
+        })
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        it("should throw internal system error if fails to connect to database", async () => {
+            it("should throw internal system error if first call to database fails to respond", async () => {
+            // Arrange
+            const requestBody = {
+                email: "email2@email.com",
+                locationId: "1234567"
+             };
+            const error = new Error("Internal system error")
+            findUserStub.throws(error)
+            // Act // Assert
+            try {
+                await userService.addFavLocation(requestBody)
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
+        })
+    })
 })

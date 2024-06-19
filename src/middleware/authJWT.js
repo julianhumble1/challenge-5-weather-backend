@@ -23,7 +23,6 @@ class authJWT {
     static isCorrectId = async (req, res, next) => {
         let user;
         try {
-            console.log(req.body.email)
             user = await User.findOne({ email: req.body.email })
         } catch (e) {
             return res.status(500).send("Internal system error")

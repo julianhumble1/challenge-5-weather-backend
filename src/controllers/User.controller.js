@@ -75,4 +75,21 @@ export default class UserController {
         return res.status(201).json(response.favouriteLocations)
     }
 
+    addFavLocation = async (req, res) => {
+        UserValidator.handleValidationErrors(req, res);
+        try {
+            await this.#service.addFavLocation(req.body)
+        } catch (e) {
+            if (e.message === "Internal system error") {
+                return res.status(500).json(e.message)
+            } else if (e.message === "User not found in database") {
+                return res.status(404).json(e.message)
+            } else if (e.message === "Location already in favourites") {
+                return res.status(400).json(e.message)
+            }
+        }
+
+        return res.status(res.status(200).json("Successfully added location to favourites"))
+    }
+
 }

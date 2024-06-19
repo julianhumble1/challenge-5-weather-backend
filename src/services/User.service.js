@@ -88,4 +88,30 @@ export default class UserService {
             return user;
         }
     }
+
+    addFavLocation = async ({ email, locationId }) => {
+        let user;
+        try {
+            user = await User.findOne({ email: email }, {"favouriteLocations": 1})
+        } catch (e) {
+            throw new Error("Internal system error")
+        }
+
+        if (!user) {
+            throw new Error("User not found in database")
+        } 
+
+        if (user.favouriteLocations.includes(locationId)) {
+            throw new Error("Location already in favourites")
+        } else {
+            user.favouriteLocations.push(locationId);
+        }
+        try {
+            await user.save();
+            return
+        } catch {
+            throw new Error("Internal system error")
+        }
+    
+    }
 }
