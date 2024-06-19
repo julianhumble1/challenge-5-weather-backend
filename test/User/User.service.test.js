@@ -462,5 +462,26 @@ describe("User service tests", () => {
                 expect(e.message).to.equal(error.message);
             }
         })
+
+        it("should throw internal system error if  call to save to database fails to respond", async () => {
+            // Arrange
+            const requestBody = {
+                email: "email2@email.com",
+                locationId: "2345678"
+             };
+            const error = new Error("Internal system error")
+            findUserStub.resolves({
+                id: "666ebf51cdf1cff8e67b6fc4",
+                favouriteLocations: ["2345678"]
+            })
+            saveStub.throws(error)
+            // Act // Assert
+             try {
+                await userService.removeFavLocation(requestBody)
+                expect.fail("Expected error was not thrown")
+            } catch (e) {
+                expect(e.message).to.equal(error.message);
+            }
+        })
     })
 })
