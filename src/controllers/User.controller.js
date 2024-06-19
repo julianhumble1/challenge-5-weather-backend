@@ -89,7 +89,7 @@ export default class UserController {
             }
         }
 
-        return res.status(res.status(200).json("Successfully added location to favourites"))
+        return res.status(200).json("Successfully added location to favourites")
     }
 
 }

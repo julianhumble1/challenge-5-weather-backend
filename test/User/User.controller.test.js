@@ -321,5 +321,14 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(400)).to.be.true;
         })
+
+        it("should respond with code 200 if request is successful", async () => {
+            // Arrange
+            userServices.addFavLocation.resolves()
+            // Act
+            await userController.addFavLocation(req, res)
+            // Assert
+            expect(res.status.calledWith(200)).to.be.true;
+        })
     })
 })
