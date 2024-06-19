@@ -411,5 +411,25 @@ describe("User service tests", () => {
                 expect(e.message).to.equal(error.message);
             }
         })
+
+        it("should call save on the updated object if request is successful", async () => {
+            // Arrange
+            const requestBody = {
+                email: "email2@email.com",
+                locationId: "1234567"
+             };
+             const saveSpy = sinon.spy()
+             findUserStub.resolves({
+                 id: "666ebf51cdf1cff8e67b6fc4",
+                 favouriteLocations: ["2345678"],
+                 save: saveSpy
+            })
+                
+        
+            // Act
+            await userService.addFavLocation(requestBody)
+            // Assert
+            expect(saveSpy.called).to.be.true;
+        })
     })
 })
