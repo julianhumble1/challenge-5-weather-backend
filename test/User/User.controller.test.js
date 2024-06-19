@@ -303,5 +303,14 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(500)).to.be.true;
         })
+
+        it("should respond with code 404 if the user is not found in the database", async () => {
+            // Arrange
+            userServices.addFavLocation.rejects(new Error("User not found in database"))
+            // Act
+            await userController.addFavLocation(req, res)
+            // Assert
+            expect(res.status.calledWith(404)).to.be.true;
+        })
     })
 })
