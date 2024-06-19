@@ -275,4 +275,33 @@ describe("UserController tests", () => {
             expect(res.json.calledWith(["216574"])).to.be.true;
         })
     })
+
+    describe("addFavLocation tests", () => {
+        beforeEach(() => {
+            userServices = {
+                addFavLocation: sinon.stub()
+            }
+            userController = new UserController(userServices)
+
+            req = {
+                body:
+                {
+                    "email": "user@example.com",
+                    "locationId": "1234567"
+                }
+            }     
+            
+            next = sinon.spy();
+            userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
+        })
+
+        it("should respond with code 500 if the service fails to connect to database", async () => {
+            // Arrange
+            userServices.addFavLocation.rejects(new Error("Internal system error"))
+            // Act
+            await userController.addFavLocation(req, res)
+            // Assert
+            expect(res.status.calledWith(500)).to.be.true;
+        })
+    })
 })
