@@ -331,4 +331,34 @@ describe("UserController tests", () => {
             expect(res.status.calledWith(200)).to.be.true;
         })
     })
+
+    describe("removeFavLocation tests", () => {
+        beforeEach(() => {
+            userServices = {
+                removeFavLocation: sinon.stub()
+            }
+            userController = new UserController(userServices)
+
+            req = {
+                body:
+                {
+                    "email": "user@example.com",
+                    "locationId": "1234567"
+                }
+            }     
+            
+            next = sinon.spy();
+            userValidatorStub = sinon.stub(UserValidator, "handleValidationErrors").callsFake((req, res, next) => next)
+         })
+        
+        it("should respond with code 500 if the service fails to connect to database", async () => {
+            // Arrange
+            userServices.removeFavLocation.rejects(new Error("Internal system error"))
+            // Act
+            await userController.removeFavLocation(req, res)
+            // Assert
+            expect(res.status.calledWith(500)).to.be.true;
+        })
+        
+    })
 })

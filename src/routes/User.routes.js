@@ -53,7 +53,11 @@ export default class UserRoutes {
             [authJWT.verifyToken, authJWT.isCorrectId, ...UserValidator.validateEmail()],
             this.#controller.addFavLocation
         )
-        
+        this.#router.patch(
+            "/removefav",
+            [authJWT.verifyToken, authJWT.isCorrectId, ...UserValidator.validateEmail()],
+            this.#controller.removeFavLocation
+        )
     } 
 
     getRouter = () => {
