@@ -3,13 +3,13 @@ POST http://localhost:3000
 Content-Type: application/json
 
 {
-    "email": "email5@email.com",
+    "email": "user1@example.com",
     "password": "password1!"
 }
 
 ###
 
-# Unsuccessful add user request
+# Unsuccessful add user request - bad email
 POST http://localhost:3000
 Content-Type: application/json
 
@@ -20,22 +20,200 @@ Content-Type: application/json
 
 ###
 
+# Unsuccessful add user request - bad password
+POST http://localhost:3000
+Content-Type: application/json
+
+{
+    "email": "user6@example.com",
+    "password": "password"
+}
+
+###
+
 # Successful login request
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "email": "email5@email.com",
+    "email": "user1@example.com",
     "password": "password1!"
 }
 
 ###
 
-# Unsucessful login request
+# Unsucessful login request - password doesn't match
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "email": "email5@email.com",
+    "email": "user1@example.com",
     "password": "password2!"
 }
+###
+
+# Unsucessful login request - user not in database
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "user2@example.com",
+    "password": "password1!"
+}
+
+###
+
+# Successful password update
+PATCH http://localhost:3000/updatePassword
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "oldPassword": "password1!",
+    "newPassword": "newPassword1!"
+}
+
+
+###
+
+# Unsuccessful password update - no token
+PATCH http://localhost:3000/updatePassword
+Content-Type: application/json
+
+{
+    "email": "user1@example.com",
+    "oldPassword": "newPassword1!",
+    "newPassword": "newPassword2!"
+}
+
+###
+
+# Unsuccessful password update - bad token
+PATCH http://localhost:3000/updatePassword
+Content-Type: application/json
+x-access-token: badtoken
+
+{
+    "email": "user1@example.com",
+    "oldPassword": "newPassword1!",
+    "newPassword": "newPassword2!"
+}
+
+###
+
+# Unsuccessful password update - new password invalid
+PATCH http://localhost:3000/updatePassword
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "oldPassword": "newPassword1!",
+    "newPassword": "newPassword"
+}
+
+###
+
+
+
+# Successful add location request
+PATCH http://localhost:3000/addfav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "locationId": "7894561"
+}
+
+###
+
+# Unsuccessful add location request - location already in favourites
+PATCH http://localhost:3000/addfav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "locationId": "7894561"
+}
+
+###
+
+# Successful remove location request
+PATCH http://localhost:3000/removefav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "locationId": "7894561"
+}
+
+###
+
+# Unsuccessful remove location request - location already not in favourites
+PATCH http://localhost:3000/removefav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "locationId": "7894561"
+}
+
+###
+# Add location to get in next request
+PATCH http://localhost:3000/addfav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com",
+    "locationId": "7894561"
+}
+
+###
+# Successful get request
+GET http://localhost:3000/fav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "user1@example.com"
+}
+
+###
+
+# Unsuccessful get favourite locations request - no token
+GET http://localhost:3000/fav
+Content-Type: application/json
+
+{
+    "email": "user1@example.com"
+}
+
+###
+
+# Unsuccessful get favourite locations request - user not in database
+GET http://localhost:3000/fav
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzJiM2VmMTdkMjI3MzZlMzE2OTNiMSIsImlhdCI6MTcxODc5MzI0MywiZXhwIjoxNzE4ODc5NjQzfQ.ho8aBXJUWaRxivXZp0yBIe5exb3uVUpm6VKkEoNNi3U
+
+{
+    "email": "nonexistent@email.com"
+}
+
+###
+
+# Unsuccessful get favourite locations request - wrong token
+GET http://localhost:3000/fav
+Content-Type: application/json
+x-access-token: badtoken
+
+{
+    "email": "user1@example.com"
+}
+
+###
