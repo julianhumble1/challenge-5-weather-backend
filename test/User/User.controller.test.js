@@ -312,5 +312,14 @@ describe("UserController tests", () => {
             // Assert
             expect(res.status.calledWith(404)).to.be.true;
         })
+
+        it("should respond with code 400 if location is already in favourites", async () => {
+            // Arrange
+            userServices.addFavLocation.rejects(new Error("Location already in favourites"))
+            // Act
+            await userController.addFavLocation(req, res)
+            // Assert
+            expect(res.status.calledWith(400)).to.be.true;
+        })
     })
 })
