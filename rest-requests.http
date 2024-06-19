@@ -1,0 +1,41 @@
+# Successful add user request
+POST http://localhost:3000
+Content-Type: application/json
+
+{
+    "email": "email5@email.com",
+    "password": "password1!"
+}
+
+###
+
+# Unsuccessful add user request
+POST http://localhost:3000
+Content-Type: application/json
+
+{
+    "email": "bademail",
+    "password": "password1!"
+}
+
+###
+
+# Successful login request
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "email5@email.com",
+    "password": "password1!"
+}
+
+###
+
+# Unsucessful login request
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "email5@email.com",
+    "password": "password2!"
+}

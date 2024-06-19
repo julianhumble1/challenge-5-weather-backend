@@ -15,7 +15,8 @@ export default class UserController {
     }
 
     addNewUser = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res)
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         try {
             const newUser = await this.#service.addNewUser(req.body)
             return res.status(201).json(newUser)
@@ -25,7 +26,8 @@ export default class UserController {
     }
 
     loginUser = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res)
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         let response;
         try {
             response = await this.#service.loginUser(req.body)
@@ -45,7 +47,8 @@ export default class UserController {
     }
 
     updatePassword = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res);
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         try {
             await this.#service.updatePassword(req.body)
             res.status(200).send("Successfully updated password")
@@ -61,7 +64,8 @@ export default class UserController {
     }
 
     getFavLocations = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res);
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         let response;
         try {
             response = await this.#service.getFavLocations(req.body)
@@ -76,7 +80,8 @@ export default class UserController {
     }
 
     addFavLocation = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res);
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         try {
             await this.#service.addFavLocation(req.body)
         } catch (e) {
@@ -93,7 +98,8 @@ export default class UserController {
     }
 
     removeFavLocation = async (req, res) => {
-        UserValidator.handleValidationErrors(req, res);
+        const sentResponse = UserValidator.handleValidationErrors(req, res)
+        if (sentResponse) return;
         try {
             await this.#service.removeFavLocation(req.body)
         } catch (e) {

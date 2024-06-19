@@ -62,13 +62,15 @@ export default class UserValidator {
             if (!errors.isEmpty()) {
                 const extractedErrors = [];
                 errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-                return res.status(400).json({
+                res.status(400).json({
                     errors:extractedErrors
                 })
+                return true
             }
         } catch (error) {
             console.error(error);
             res.status(500).send("Server error")
+            return
         }
     }
 }
