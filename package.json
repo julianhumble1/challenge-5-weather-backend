@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "NODE_ENV=dev nodemon src/index/js",
     "start-win": "SET NODE_ENV=dev&&nodemon src/index.js",
+    "test": "NODE_ENV=test mocha --timeout 10000 --exit --recursive",
     "test-win": "SET NODE_ENV=test&&mocha --timeout 10000 --exit --recursive",
     "coverage": "NODE_ENV=test c8 -r html npm test",
     "coverage-win": "SET NODE_ENV=test&& c8 -r text npm run test-win"
